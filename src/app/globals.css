@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #05040A;
+  position: relative;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,240,255,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,240,255,0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 55% at 50% 0%, black 35%, transparent 100%);
+  mask-image: radial-gradient(ellipse 80% 55% at 50% 0%, black 35%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 2px, rgba(0,0,0,0.22) 3px);
+  pointer-events: none;
+  opacity: 0.3;
+  z-index: 1;
+}
+
+.glitch-text {
+  color: #EDF1F8;
+  text-shadow: -1.5px 0 rgba(0,240,255,0.85), 1.5px 0 rgba(255,42,109,0.85);
+}
+
+.chrome-text {
+  background: linear-gradient(180deg, #F5F8FC 0%, #B7BECF 55%, #6B7189 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}

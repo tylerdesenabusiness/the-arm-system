@@ -1,0 +1,21 @@
+name: Weekly ingest
+
+on:
+  schedule:
+    - cron: '0 12 * * 1' # every Monday at noon UTC
+  workflow_dispatch: {}
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install
+      - run: node scripts/ingest.js
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          CFBD_API_KEY: ${{ secrets.CFBD_API_KEY }}
