@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Search } from "lucide-react";
+import { Search, Trophy } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
 export default function Navbar() {
@@ -39,6 +39,10 @@ export default function Navbar() {
             className="bg-transparent outline-none text-sm text-white placeholder-white/30 w-full font-mono"
           />
         </form>
+        <Link href="/trophies" className="flex items-center gap-1 text-white/60 hover:text-arm-orange text-xs font-semibold uppercase tracking-wide transition-colors whitespace-nowrap">
+          <Trophy size={14} />
+          Trophies
+        </Link>
         <div className="ml-auto">
           {user ? (
             <span className="text-white/50 text-xs font-mono">{user.email}</span>
