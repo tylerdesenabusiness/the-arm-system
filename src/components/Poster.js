@@ -30,15 +30,9 @@ export default function Poster({ team, name, subtitle }) {
       </span>
 
       <div className="relative z-10 flex-1 flex items-center justify-center px-1">
-        <div className="relative w-full bg-black/80 border border-arm-blue/30 rounded-sm px-2 py-3 flex items-center justify-center">
+        <div className="w-full bg-black/80 border border-arm-blue/30 rounded-sm px-2 py-3 flex items-center justify-center">
           <div
-            className="absolute inset-0 flex items-center justify-center font-mono font-bold text-lg tracking-[0.2em] text-arm-blue/10 select-none"
-            aria-hidden="true"
-          >
-            88 VS 888
-          </div>
-          <div
-            className="relative font-mono font-bold text-lg tracking-[0.2em] whitespace-nowrap"
+            className="font-mono font-bold text-lg tracking-[0.2em] whitespace-nowrap"
             style={{ color: "#00F0FF", textShadow: "0 0 6px rgba(0,240,255,0.95), 0 0 12px rgba(0,240,255,0.6)" }}
           >
             {playerInitials}{" "}
