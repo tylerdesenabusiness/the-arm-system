@@ -7,6 +7,11 @@ const supabase = createClient(
 
 const CFBD_KEY = process.env.CFBD_API_KEY;
 const SEASON = Number(process.env.INGEST_SEASON || 2025);
+// If set (comma-separated historical team names), only those teams get pulled this run.
+// Leave unset to pull everyone.
+const ONLY_TEAMS = process.env.INGEST_ONLY_TEAM
+  ? process.env.INGEST_ONLY_TEAM.split(",").map((t) => t.trim())
+  : null;
 
 const QB_ROSTER = [
   { name: "Arch Manning", currentTeam: "Texas", historicalTeam: "Texas" },
@@ -48,9 +53,10 @@ const QB_ROSTER = [
   { name: "Drake Lindsey", currentTeam: "Minnesota", historicalTeam: "Minnesota" },
   { name: "Kamario Taylor", currentTeam: "Mississippi State", historicalTeam: "Mississippi State" },
   { name: "Chase Jenkins", currentTeam: "Rice", historicalTeam: "Rice" },
+  { name: "Drew Mestemaker", currentTeam: "North Texas", historicalTeam: "North Texas" },
 ];
 
-const teamsToQuery = {};
+let teamsToQuery = {};
 const currentTeamByName = {};
 QB_ROSTER.forEach(({ name, currentTeam, historicalTeam }) => {
   if (!teamsToQuery[historicalTeam]) teamsToQuery[historicalTeam] = [];
@@ -58,18 +64,26 @@ QB_ROSTER.forEach(({ name, currentTeam, historicalTeam }) => {
   currentTeamByName[name.toLowerCase()] = currentTeam;
 });
 
+if (ONLY_TEAMS) {
+  const filtered = {};
+  ONLY_TEAMS.forEach((t) => {
+    if (teamsToQuery[t]) filtered[t] = teamsToQuery[t];
+  });
+  teamsToQuery = filtered;
+}
+
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function cfbdGet(path, retries = 4) {
+async function cfbdGet(path, retries = 6) {
   for (let attempt = 0; attempt < retries; attempt++) {
     const res = await fetch(`https://api.collegefootballdata.com${path}`, {
       headers: { Authorization: `Bearer ${CFBD_KEY}` },
     });
     if (res.status === 429) {
-      const wait = 1500 * (attempt + 1);
-      console.log(`  rate limited, waiting ${wait}ms before retry...`);
+      const wait = 5000 * (attempt + 1);
+      console.log(`  rate limited, waiting ${wait / 1000}s before retry...`);
       await sleep(wait);
       continue;
     }
@@ -77,7 +91,7 @@ async function cfbdGet(path, retries = 4) {
       console.error(`  CFBD request failed: ${path} -> ${res.status}`);
       return [];
     }
-    await sleep(300);
+    await sleep(1000);
     return res.json();
   }
   console.error(`  gave up after ${retries} retries: ${path}`);
@@ -90,7 +104,13 @@ async function run() {
     process.exit(1);
   }
 
-  for (const historicalTeam of Object.keys(teamsToQuery)) {
+  const teamNames = Object.keys(teamsToQuery);
+  if (teamNames.length === 0) {
+    console.log("No matching teams to process. Check INGEST_ONLY_TEAM spelling.");
+    return;
+  }
+
+  for (const historicalTeam of teamNames) {
     const allowedNames = teamsToQuery[historicalTeam];
     console.log(`Fetching ${SEASON} games for ${historicalTeam}...`);
     const games = await cfbdGet(`/games?year=${SEASON}&team=${encodeURIComponent(historicalTeam)}`);
