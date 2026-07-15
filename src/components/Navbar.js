@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Search, Trophy, Swords } from "lucide-react";
+import { Search, Trophy, Swords, HeartHandshake, PencilRuler } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
 export default function Navbar() {
@@ -57,9 +57,17 @@ export default function Navbar() {
           <Swords size={14} />
           Compare
         </Link>
+        <Link href="/concept-creator" className="flex items-center gap-1 text-white/60 hover:text-arm-blue text-xs font-semibold uppercase tracking-wide transition-colors whitespace-nowrap">
+          <PencilRuler size={14} />
+          Concepts
+        </Link>
         <Link href="/trophies" className="flex items-center gap-1 text-white/60 hover:text-arm-orange text-xs font-semibold uppercase tracking-wide transition-colors whitespace-nowrap">
           <Trophy size={14} />
           Trophies
+        </Link>
+        <Link href="/support" className="flex items-center gap-1 text-white/60 hover:text-arm-green text-xs font-semibold uppercase tracking-wide transition-colors whitespace-nowrap">
+          <HeartHandshake size={14} />
+          Support
         </Link>
         <div className="ml-auto">
           {user ? (
