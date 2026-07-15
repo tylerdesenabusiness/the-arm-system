@@ -3,18 +3,32 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Search, Trophy } from "lucide-react";
+import { Search, Trophy, Swords } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
 export default function Navbar() {
   const router = useRouter();
   const [query, setQuery] = useState("");
   const [user, setUser] = useState(null);
+  const [username, setUsername] = useState(null);
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => setUser(data.user ?? null));
+    const loadProfile = async (u) => {
+      if (!u) {
+        setUsername(null);
+        return;
+      }
+      const { data } = await supabase.from("profiles").select("username").eq("id", u.id).single();
+      setUsername(data?.username || null);
+    };
+
+    supabase.auth.getUser().then(({ data }) => {
+      setUser(data.user ?? null);
+      loadProfile(data.user ?? null);
+    });
     const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
+      loadProfile(session?.user ?? null);
     });
     return () => sub.subscription.unsubscribe();
   }, []);
@@ -39,13 +53,23 @@ export default function Navbar() {
             className="bg-transparent outline-none text-sm text-white placeholder-white/30 w-full font-mono"
           />
         </form>
+        <Link href="/compare" className="flex items-center gap-1 text-white/60 hover:text-arm-blue text-xs font-semibold uppercase tracking-wide transition-colors whitespace-nowrap">
+          <Swords size={14} />
+          Compare
+        </Link>
         <Link href="/trophies" className="flex items-center gap-1 text-white/60 hover:text-arm-orange text-xs font-semibold uppercase tracking-wide transition-colors whitespace-nowrap">
           <Trophy size={14} />
           Trophies
         </Link>
         <div className="ml-auto">
           {user ? (
-            <span className="text-white/50 text-xs font-mono">{user.email}</span>
+            username ? (
+              <Link href={`/u/${username}`} className="text-white/50 hover:text-white text-xs font-mono">
+                @{username}
+              </Link>
+            ) : (
+              <span className="text-white/50 text-xs font-mono">{user.email}</span>
+            )
           ) : (
             <Link href="/login" className="text-arm-blue text-xs font-semibold uppercase tracking-wide">
               Sign in
