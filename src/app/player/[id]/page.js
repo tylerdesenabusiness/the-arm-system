@@ -17,11 +17,14 @@ export default async function PlayerPage({ params }) {
   const withAvg = (games || []).map((g) => {
     const stars = g.ratings.map((r) => r.stars);
     const avg = stars.length ? stars.reduce((a, b) => a + b, 0) / stars.length : 0;
-    return { ...g, avgRating: Math.round(avg * 10) / 10 };
+    return { ...g, avgRating: Math.round(avg * 10) / 10, ratingCount: stars.length };
   });
 
-  const careerAvg = withAvg.length
-    ? (withAvg.reduce((s, g) => s + g.avgRating, 0) / withAvg.length).toFixed(2)
+  // Career average only counts games that actually have at least one rating —
+  // unrated games don't drag the average down as if they were 0 stars.
+  const ratedGames = withAvg.filter((g) => g.ratingCount > 0);
+  const careerAvg = ratedGames.length
+    ? (ratedGames.reduce((s, g) => s + g.avgRating, 0) / ratedGames.length).toFixed(2)
     : "—";
 
   if (!player) {
@@ -47,7 +50,9 @@ export default async function PlayerPage({ params }) {
         </div>
         <div className="ml-auto text-right">
           <div className="text-2xl font-bold text-arm-orange">{careerAvg}</div>
-          <div className="text-white/40 text-[10px] uppercase tracking-wide">career avg</div>
+          <div className="text-white/40 text-[10px] uppercase tracking-wide">
+            career avg{ratedGames.length ? ` · ${ratedGames.length} rated` : ""}
+          </div>
         </div>
       </div>
 
