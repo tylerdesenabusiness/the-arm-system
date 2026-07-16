@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Search, Trophy, Swords } from "lucide-react";
+import { Search, Trophy, Swords, HeartHandshake } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
 export default function Navbar() {
@@ -44,7 +44,7 @@ export default function Navbar() {
         <Link href="/" className="font-display font-black text-lg tracking-widest glitch-text whitespace-nowrap">
           THE ARM <span className="text-arm-orange">SYSTEM</span>
         </Link>
-        <form onSubmit={handleSubmit} className="flex items-center gap-2 bg-black/40 border border-arm-blue/20 rounded px-3 py-1.5 max-w-[200px] focus-within:border-arm-blue/70 transition-colors">
+        <form onSubmit={handleSubmit} className="flex items-center gap-2 bg-black/40 border border-arm-blue/20 rounded px-3 py-1.5 max-w-[180px] focus-within:border-arm-blue/70 transition-colors">
           <Search size={14} className="text-arm-blue/60 shrink-0" />
           <input
             value={query}
@@ -60,6 +60,10 @@ export default function Navbar() {
         <Link href="/trophies" className="flex items-center gap-1 text-white/60 hover:text-arm-orange text-xs font-semibold uppercase tracking-wide transition-colors whitespace-nowrap">
           <Trophy size={14} />
           Trophies
+        </Link>
+        <Link href="/support" className="flex items-center gap-1 text-white/60 hover:text-arm-green text-xs font-semibold uppercase tracking-wide transition-colors whitespace-nowrap">
+          <HeartHandshake size={14} />
+          Support
         </Link>
         <div className="ml-auto shrink-0">
           {user ? (
