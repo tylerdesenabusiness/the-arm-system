@@ -7,8 +7,6 @@ const supabase = createClient(
 
 const CFBD_KEY = process.env.CFBD_API_KEY;
 const SEASON = Number(process.env.INGEST_SEASON || 2025);
-// If set (comma-separated historical team names), only those teams get pulled this run.
-// Leave unset to pull everyone.
 const ONLY_TEAMS = process.env.INGEST_ONLY_TEAM
   ? process.env.INGEST_ONLY_TEAM.split(",").map((t) => t.trim())
   : null;
@@ -42,7 +40,7 @@ const QB_ROSTER = [
   { name: "Cutter Boley", currentTeam: "Arizona State", historicalTeam: "Kentucky" },
   { name: "Julian Lewis", currentTeam: "Colorado", historicalTeam: "Colorado" },
   { name: "Bear Bachmeier", currentTeam: "BYU", historicalTeam: "BYU" },
-  { name: "Alberto Mendoza", currentTeam: "Georgia Tech", historicalTeam: "Georgia Tech" },
+  { name: "Alberto Mendoza", currentTeam: "Georgia Tech", historicalTeam: "Indiana" },
   { name: "Aaron Philo", currentTeam: "Florida", historicalTeam: "Georgia Tech" },
   { name: "Steve Angeli", currentTeam: "Syracuse", historicalTeam: "Syracuse" },
   { name: "Alonza Barnett III", currentTeam: "UCF", historicalTeam: "UCF" },
@@ -54,6 +52,20 @@ const QB_ROSTER = [
   { name: "Kamario Taylor", currentTeam: "Mississippi State", historicalTeam: "Mississippi State" },
   { name: "Chase Jenkins", currentTeam: "Rice", historicalTeam: "Rice" },
   { name: "Drew Mestemaker", currentTeam: "North Texas", historicalTeam: "North Texas" },
+  { name: "CJ Bailey", currentTeam: "NC State", historicalTeam: "NC State" },
+  { name: "Billy Edwards", currentTeam: "Wisconsin", historicalTeam: "Maryland" },
+  { name: "Conner Weigman", currentTeam: "Houston", historicalTeam: "Houston" },
+  { name: "Jaden Craig", currentTeam: "TCU", historicalTeam: "Harvard" },
+  { name: "Brendan Sorsby", currentTeam: "Cincinnati", historicalTeam: "Cincinnati" },
+  { name: "Ashton Daniels", currentTeam: "Florida State", historicalTeam: "Stanford" },
+  { name: "DJ Lagway", currentTeam: "Baylor", historicalTeam: "Florida" },
+  { name: "Ryan Browne", currentTeam: "Purdue", historicalTeam: "Purdue" },
+  { name: "Alessio Milivojevic", currentTeam: "Michigan State", historicalTeam: "Michigan State" },
+  { name: "Mason McKenzie", currentTeam: "Boston College", historicalTeam: "Boston College" },
+  { name: "Dylan Lonergan", currentTeam: "Rutgers", historicalTeam: "Rutgers" },
+  { name: "Nicco Marchiol", currentTeam: "West Virginia", historicalTeam: "West Virginia" },
+  { name: "Eli Holstein", currentTeam: "Pittsburgh", historicalTeam: "Alabama" },
+  { name: "Maddux Madsen", currentTeam: "Boise State", historicalTeam: "Boise State" },
 ];
 
 let teamsToQuery = {};
