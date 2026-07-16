@@ -12,13 +12,12 @@ function QBFigure({ colors }) {
   const sw = 2.2;
 
   return (
-    <svg viewBox="0 0 120 160" className="w-full h-auto overflow-visible">
+    <svg viewBox="0 0 120 160" className="w-full h-full">
       <g
         className="transition-transform duration-300 ease-out rotate-0 group-hover:-rotate-[7deg]"
         style={hipPivot}
         transform="translate(0 0)"
       >
-        {/* back leg */}
         <g transform="translate(76 96)">
           <g
             className="transition-transform duration-300 ease-out rotate-[78deg] group-hover:rotate-[62deg]"
@@ -27,7 +26,6 @@ function QBFigure({ colors }) {
             <rect x="0" y="-4.5" width="30" height="9" rx="2" fill={colors.secondary} stroke={LEG_STROKE} strokeWidth={sw} />
           </g>
         </g>
-        {/* front leg */}
         <g transform="translate(44 96)">
           <g
             className="transition-transform duration-300 ease-out rotate-[100deg] group-hover:rotate-[112deg]"
@@ -39,7 +37,6 @@ function QBFigure({ colors }) {
         <ellipse cx="26" cy="130" rx="7" ry="2.8" fill={CLEAT} stroke={OUTLINE} strokeWidth="1.6" />
         <ellipse cx="90" cy="130" rx="7" ry="2.8" fill={CLEAT} stroke={OUTLINE} strokeWidth="1.6" />
 
-        {/* torso — slimmer taper */}
         <polygon
           points="37,62 83,62 76,102 44,102"
           fill={colors.primary}
@@ -50,15 +47,12 @@ function QBFigure({ colors }) {
           7
         </text>
 
-        {/* shoulder pads */}
         <polygon points="27,55 45,55 41,68 23,65" fill={colors.secondary} stroke={OUTLINE} strokeWidth={sw} />
         <polygon points="93,55 75,55 79,68 97,65" fill={colors.secondary} stroke={OUTLINE} strokeWidth={sw} />
 
-        {/* helmet */}
         <circle cx="60" cy="31" r="21" fill={colors.secondary} stroke={OUTLINE} strokeWidth={sw} />
         <polygon points="57.5,10 62.5,10 64,31 56,31" fill={colors.primary} stroke={OUTLINE} strokeWidth="1.3" />
 
-        {/* face */}
         <path
           d="M 48 34 Q 47 24 60 22 Q 73 24 72 34 Q 72 44 66 50 L 54 50 Q 48 44 48 34 Z"
           fill={SKIN}
@@ -69,7 +63,6 @@ function QBFigure({ colors }) {
         <line x1="70" y1="33" x2="63" y2="35" stroke={OUTLINE} strokeWidth="2.1" strokeLinecap="round" />
         <line x1="55" y1="46" x2="65" y2="46" stroke={OUTLINE} strokeWidth="1.8" strokeLinecap="round" />
 
-        {/* facemask */}
         <g stroke="#B9C0C6" strokeWidth="2" strokeLinecap="round">
           <line x1="47" y1="40" x2="73" y2="40" />
           <line x1="47" y1="45" x2="73" y2="45" />
@@ -78,7 +71,6 @@ function QBFigure({ colors }) {
           <line x1="71" y1="31" x2="75" y2="50" />
         </g>
 
-        {/* left arm — guide arm */}
         <g transform="translate(26 64)">
           <g
             className="transition-transform duration-300 ease-out rotate-[45deg] group-hover:-rotate-[15deg]"
@@ -88,7 +80,6 @@ function QBFigure({ colors }) {
           </g>
         </g>
 
-        {/* right arm — throwing arm, two segments */}
         <g transform="translate(94 64)">
           <g
             className="transition-transform duration-300 ease-out rotate-[145deg] group-hover:-rotate-[95deg]"
@@ -137,16 +128,18 @@ export default function PlayerCard({ id, name, team, careerAvg, careerCount }) {
         }}
       />
 
-      <span className="relative z-10 text-[10px] uppercase tracking-widest text-arm-blue/80 font-mono font-semibold self-end p-3 pb-0">
+      <span className="relative z-10 text-[10px] uppercase tracking-widest text-arm-blue/80 font-mono font-semibold self-end p-3 pb-0 shrink-0">
         {team}
       </span>
 
-      <div className="relative z-10 flex-1 flex items-center justify-center px-5 py-2">
-        <QBFigure colors={colors} />
+      <div className="relative z-10 flex-1 min-h-0 flex items-center justify-center px-6 py-1">
+        <div className="w-full h-full max-h-[70%]">
+          <QBFigure colors={colors} />
+        </div>
       </div>
 
-      <div className="relative z-10 text-center p-3 pt-0">
-        <div className="font-display font-bold text-sm leading-tight chrome-text">{name}</div>
+      <div className="relative z-10 text-center px-3 pb-3 pt-1 shrink-0">
+        <div className="font-display font-bold text-sm leading-tight chrome-text truncate">{name}</div>
         <div className="flex items-center justify-center gap-1 mt-1">
           <span className="text-arm-orange text-xs font-mono font-bold">{careerAvg || "—"}</span>
           <span className="text-white/30 text-[10px] font-mono">({careerCount} rated)</span>
